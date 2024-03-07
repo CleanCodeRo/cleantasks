@@ -2,7 +2,7 @@ import { OrganizationProfile } from "@clerk/nextjs";
 
 const SettingsPage = () => {
   return (
-    <div className="full">
+    <div className="w-full flex items-center justify-center">
       <OrganizationProfile
         appearance={{
           elements: {
