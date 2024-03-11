@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import React from "react";
-
+import ListContainer from "./components/ListContainter";
 
 interface BoardIdPageProps {
   params: {
@@ -11,37 +11,36 @@ interface BoardIdPageProps {
   };
 }
 
-const BoardIdPage = async({
-  params
-}: BoardIdPageProps) => {
+const BoardIdPage = async ({ params }: BoardIdPageProps) => {
+  const { orgId } = auth();
 
-  const { orgId } = auth()
-
-  if(!orgId) redirect('/select-org');
+  if (!orgId) redirect("/select-org");
 
   const lists = await db.list.findMany({
     where: {
       boardId: params.boardId,
       board: {
-        orgId
-      }
+        orgId,
+      },
     },
     include: {
       cards: {
         orderBy: {
-          order: 'asc'
-        }
-      }
+          order: "asc", // maby should change name in prisma to position
+        },
+      },
     },
     orderBy: {
-      order: 'asc'
-    }
-  })
-
+      order: "asc",
+    },
+  });
 
   return (
-    <div>
-      <h1>Board {params.boardId}</h1>
+    <div className="p-4 h-full overflow-x-auto">
+      <ListContainer 
+        boardId={params.boardId}
+        data={lists}
+      />
     </div>
   );
 };

@@ -5,8 +5,7 @@ import { revalidatePath } from "next/cache";
 import { InputType, ReturnType } from "./types";
 import { db } from "@/prisma/db";
 import { createSafeAction } from "@/lib/createSafeAction";
-import { UpdateBoard } from "./schema";
-
+import { UpdateList } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -17,28 +16,30 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { title, id } = data;
-  let board;
+  const { title, id, boardId } = data;
+  let list;
 
   try {
-    board = await db.board.update({
+    list = await db.list.update({
       where: {
         id,
-        orgId,
+        boardId,
+        board: {
+          orgId,
+        }
       },
       data: {
         title,
       },
     });
-
   } catch (error) {
     return {
-      error: "Failed to update."
-    }
+      error: "Failed to update.",
+    };
   }
 
-  revalidatePath(`/board/${id}`);
-  return { data: board };
+  revalidatePath(`/board/${boardId}`);
+  return { data: list };
 };
 
-export const updateBoard = createSafeAction(UpdateBoard, handler);
+export const updateList = createSafeAction(UpdateList, handler);
