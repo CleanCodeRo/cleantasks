@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { InputType, ReturnType } from "./types";
-import { db } from "@/prisma/db";
+import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { UpdateList } from "./schema";
 
@@ -26,7 +26,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         boardId,
         board: {
           orgId,
-        }
+        },
       },
       data: {
         title,

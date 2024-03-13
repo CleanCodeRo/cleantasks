@@ -3,10 +3,9 @@
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { InputType, ReturnType } from "./types";
-import { db } from "@/prisma/db";
+import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { UpdateBoard } from "./schema";
-
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -30,11 +29,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         title,
       },
     });
-
   } catch (error) {
     return {
-      error: "Failed to update."
-    }
+      error: "Failed to update.",
+    };
   }
 
   revalidatePath(`/board/${id}`);

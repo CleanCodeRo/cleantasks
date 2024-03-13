@@ -3,7 +3,7 @@ import Hint from "./components/Hint";
 import FormPopover from "@/components/form/FormPopover";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { db } from "@/prisma/db";
+import { db } from "@/lib/db";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -65,7 +65,6 @@ const BoardList = async () => {
   );
 };
 
-
 BoardList.Skeleton = function SkeletonBoardList() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -78,8 +77,7 @@ BoardList.Skeleton = function SkeletonBoardList() {
       <Skeleton className="aspect-video h-full w-full p-2" />
       <Skeleton className="aspect-video h-full w-full p-2" />
     </div>
-  )
-}
-
+  );
+};
 
 export default BoardList;

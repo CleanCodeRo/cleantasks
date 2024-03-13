@@ -5,8 +5,7 @@ import { InputType, ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
-import { DeleteBoard } from "./schema";
-import { redirect } from "next/navigation";
+import { DeleteList } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth();
@@ -17,15 +16,18 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { id } = data;
+  const { id, boardId } = data;
 
-  let board;
+  let list;
 
   try {
-    board = await db.board.delete({
+    list = await db.list.delete({
       where: {
         id,
-        orgId,
+        boardId,
+        board: {
+          orgId,
+        },
       },
     });
   } catch (error) {
@@ -34,8 +36,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  revalidatePath(`/organization/${orgId}`);
-  redirect(`/organization/${orgId}`);
+  revalidatePath(`/organization/${boardId}`);
+  return {
+    data: list,
+  };
 };
 
-export const deleteBoard = createSafeAction(DeleteBoard, handler);
+export const deleteList = createSafeAction(DeleteList, handler);

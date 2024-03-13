@@ -29,7 +29,7 @@ const Navbar = () => {
           <Button
             variant="primary"
             size="sm"
-            className="rounded-sm block md:hidden"
+            className="rounded-sm block md:hidden bg-[#4D724D]"
           >
             <Plus className="h-4 w-4" />
           </Button>

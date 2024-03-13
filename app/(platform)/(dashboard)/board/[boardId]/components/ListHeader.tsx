@@ -7,12 +7,14 @@ import { List } from "@prisma/client";
 import { ElementRef, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener } from "usehooks-ts";
+import ListOptions from "./ListOptions";
 
 interface ListHeaderProps {
   data: List;
+  onAddCard: () => void;
 }
 
-const ListHeader = ({ data }: ListHeaderProps) => {
+const ListHeader = ({ data, onAddCard }: ListHeaderProps) => {
   const [title, setTitle] = useState(data.title);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -31,18 +33,17 @@ const ListHeader = ({ data }: ListHeaderProps) => {
     setIsEditing(false);
   };
 
-
   const { execute } = useAction(updateList, {
     onSuccess: (data) => {
-        toast.success(`Renamed list to ${data.title}`);
-        setTitle(data.title);
-        disableEditing();   
+      toast.success(`Renamed list to ${data.title}`);
+      setTitle(data.title);
+      disableEditing();
     },
     onError: (error) => {
-        toast.error(error);
-        disableEditing();
-    }
-  })
+      toast.error(error);
+      disableEditing();
+    },
+  });
 
   const handleSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
@@ -50,11 +51,11 @@ const ListHeader = ({ data }: ListHeaderProps) => {
     const boardId = formData.get("boardId") as string;
 
     execute({ title, id, boardId });
-  }
+  };
 
   const onBlur = () => {
     formRef.current?.requestSubmit();
-  }
+  };
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -67,31 +68,33 @@ const ListHeader = ({ data }: ListHeaderProps) => {
   return (
     <div className="pt-2 px-2 text-sm font-semibold flex justify-between items-start gap-x-2">
       {isEditing ? (
-        <form  
-            className="flex-1 px-[2px]"
-            ref={formRef}
-            action={handleSubmit}
-        >
-          <input hidden id="id" name="id" value={data.id} />
-          <input hidden id="boardId" name="boardId" value={data.boardId}/>
-          <FormInput 
+        <form className="flex-1 px-[2px]" ref={formRef} action={handleSubmit}>
+          <input hidden id="id" name="id" defaultValue={data.id} />
+          <input
+            hidden
+            id="boardId"
+            name="boardId"
+            defaultValue={data.boardId}
+          />
+          <FormInput
             ref={inputRef}
             onBlur={onBlur}
             id="title"
             placeholder="Enter list title..."
             defaultValue={title}
-            className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg[#a9c7aa]"
+            className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-[#a9c7aa]"
           />
           <button type="submit" hidden />
         </form>
       ) : (
         <div
           onClick={enableEditing}
-          className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent"
+          className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent hover:cursor-pointer"
         >
           {title}
         </div>
       )}
+      <ListOptions onAddCard={onAddCard} data={data} />
     </div>
   );
 };

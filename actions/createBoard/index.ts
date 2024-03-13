@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs";
 import { InputType, ReturnType } from "./types";
-import { db } from "@/prisma/db";
+import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/createSafeAction";
 import { CreateBoardSchema } from "./schema";
@@ -17,20 +17,27 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 
   const { title, image } = data;
 
-  const [
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName] =
+    image.split("|");
+
+  console.log({
     imageId,
     imageThumbUrl,
     imageFullUrl,
     imageLinkHTML,
-    imageUserName
-  ] = image.split("|");
+    imageUserName,
+  });
 
-  console.log({ imageId, imageThumbUrl, imageFullUrl, imageLinkHTML, imageUserName });
-
-  if(!imageId || !imageThumbUrl || !imageFullUrl || !imageLinkHTML || !imageUserName) {
+  if (
+    !imageId ||
+    !imageThumbUrl ||
+    !imageFullUrl ||
+    !imageLinkHTML ||
+    !imageUserName
+  ) {
     return {
-      error: "Missing Fields failed to create board"
-    }
+      error: "Missing Fields failed to create board",
+    };
   }
 
   let board;
