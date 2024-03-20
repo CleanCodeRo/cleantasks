@@ -12,7 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useAction } from "@/hooks/useAction";
 import { List } from "@prisma/client";
-import { MoreHorizontal, X } from "lucide-react";
+import { Copy, MoreHorizontal, Plus, Trash, X } from "lucide-react";
 import { ElementRef, useRef } from "react";
 import { toast } from "sonner";
 
@@ -73,25 +73,27 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           List actions
         </div>
         <PopoverClose ref={closeRef} asChild>
-          <Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600" variant="ghost">
+          <Button className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600 bg-transparent hover:text-red-600 hover:bg-transparent" >
             <X className="h-4 w-4" />
           </Button>
         </PopoverClose>
         <Button
           onClick={onAddCard}
-          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:bg-white/55"
           variant="ghost"
         >
-          Add card...
+          Add card
+          <Plus className="h-4 w-4 ml-auto" />
         </Button>
         <form action={onCopy}>
           <input hidden name="id" id="id" defaultValue={data.id} />
           <input hidden name="boardId" id="boardId" defaultValue={data.boardId} />
           <FormSubmit
             variant="ghost"
-            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:bg-white/55 mb-2"
           >
-            Copy list...
+            Copy list
+            <Copy className="h-4 w-4 ml-auto" />
           </FormSubmit>
         </form>
         <Separator />
@@ -102,9 +104,10 @@ const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
           <input hidden name="boardId" id="boardId" defaultValue={data.boardId} />
           <FormSubmit
             variant="ghost"
-            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm"
+            className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:text-red-600 mt-2"
           >
             Delete this list
+            <Trash className="h-4 w-4 ml-auto" />
           </FormSubmit>
         </form>
       </PopoverContent>

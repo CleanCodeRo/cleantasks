@@ -8,6 +8,8 @@ import { fetcher } from "@/lib/fetcher";
 import Header from "./Header";
 import Description from "./Description";
 import Actions from "./Actions";
+import { AuditLog } from "@prisma/client";
+import Activity from "./Activity";
 
 
 
@@ -21,6 +23,11 @@ const CardModal = () => {
     queryFn: () => fetcher(`/api/cards/${id}`),
   })
 
+  const { data: auditLogData } = useQuery<AuditLog[]>({
+    queryKey: ["card-logs", id],
+    queryFn: () => fetcher(`/api/cards/${id}/logs`),
+  })
+
   return (
     <Dialog
         open={isOpen}
@@ -31,10 +38,12 @@ const CardModal = () => {
           ? <Header.Skeleton />
           : <Header data={cardData} />
         }
+        
         <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
           <div className="col-span-3">
             <div className="w-full space-y-6">
               {!cardData ? <Description.Skeleton /> : <Description data={cardData} />}
+              {!auditLogData ? <Activity.Skeleton /> : <Activity items={auditLogData} />}
             </div>
           </div>
           {!cardData 

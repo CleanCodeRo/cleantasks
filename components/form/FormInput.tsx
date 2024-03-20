@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -31,12 +31,20 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       disabled,
       errors,
       className,
-      defaultValue = "",
+      defaultValue = '',
       onBlur,
     },
     ref
   ) => {
     const { pending } = useFormStatus();
+
+
+    const [inputValue, setInputValue] = useState(defaultValue);
+
+    const handleInputChange = (event: any) => {
+        setInputValue(event.target.value);
+    };
+
 
 
     return (
@@ -51,8 +59,10 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
             </Label>
           ) : null}
           <Input
+            value={inputValue}
+            // maby add a default value here although will be an error
+            onChange={handleInputChange}
             onBlur={onBlur}
-            defaultValue={defaultValue}
             ref={ref}
             required={required}
             name={id}
@@ -61,7 +71,6 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
             disabled={pending || disabled}
             className={cn("text-sm px-2 py-1 h-7", className)}
             aria-describedby={`${id}-error`}
-
           />
         </div>
         <FormErrors id={id} errors={errors} />

@@ -6,7 +6,7 @@ import {
   PopoverTrigger,
   PopoverClose,
 } from "@/components/ui/popover";
-import { Cog, X } from "lucide-react";
+import { Cog, Trash, X } from "lucide-react";
 import { deleteBoard } from "@/actions/deleteBoard";
 import { useAction } from "@/hooks/useAction";
 import { toast } from "sonner";
@@ -50,11 +50,12 @@ const BoardOptions = ({ id }: BoardOptionsProps) => {
         </PopoverClose>
         <Button
           variant="ghost"
-          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:text-red-600"
+          className="rounded-none w-full h-auto p-2 px-5 justify-start font-normal text-sm hover:text-red-600 hover:bg-white/55"
           disabled={isLoading}
           onClick={onDelete}
         >
           Delete Board
+          <Trash className="h-4 w-4 ml-auto" />
         </Button>
       </PopoverContent>
     </Popover>
