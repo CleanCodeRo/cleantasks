@@ -36,7 +36,7 @@ const BoardList = async () => {
             style={{ backgroundImage: `url(${board.imageThumbUrl})` }}
           >
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
-            <p className="relative font-semibold text-white">{board.title}</p>
+            <p className="relative font-semibold text-white text-center text-xl">{board.title}</p>
           </Link>
         ))}
         <FormPopover sideOffset={10} side="bottom">

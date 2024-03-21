@@ -59,7 +59,7 @@ const FormPopover = ({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className="w-80 pt-3"
+        className="w-80 pt-3 ml-2 select-none"
         side={side}
         sideOffset={sideOffset}
       >
@@ -68,7 +68,7 @@ const FormPopover = ({
         </div>
         <PopoverClose asChild ref={closeRef}>
           <Button
-            className="h-auto w-auto p-2 absolute top-2 right-2"
+            className="h-auto w-auto p-2 absolute top-2 right-2 hover:bg-transparent hover:text-red-600"
             variant="ghost"
           >
             <XIcon className="h-4 w-4" />

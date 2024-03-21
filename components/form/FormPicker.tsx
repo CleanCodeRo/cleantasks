@@ -62,7 +62,7 @@ const FormPicker = ({ id, errors }: FormPickerProps) => {
           <div
             key={image.id}
             className={cn(
-              "cursor-pointer relative aspect-video bg-muted group hover:opacity-75 transition",
+              "cursor-pointer relative aspect-video bg-muted group hover:opacity-75 transition rounded-md",
               pending && "opacity-50 hover:opacity-50 cursor-auto"
             )}
             onClick={() => {
@@ -84,6 +84,7 @@ const FormPicker = ({ id, errors }: FormPickerProps) => {
               fill
               alt="Unsplash Image"
               className="object-cover rounded-sm"
+              draggable={false}
             />
             {selectedImageId === image.id && (
               <div className="absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center">
