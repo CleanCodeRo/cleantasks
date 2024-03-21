@@ -59,7 +59,7 @@ const FormPopover = ({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent
         align={align}
-        className="w-80 pt-3 ml-2 select-none"
+        className="lg:w-80 lg:left-0 lg:top-0 pt-3 ml-2 4xs:w-56 4xs:mr-4 md:mr-0 relative 4xs:top-[-40px] md:left-10  select-none"
         side={side}
         sideOffset={sideOffset}
       >
