@@ -29,7 +29,7 @@ const poppins = Poppins({
 
 const GreetPage = () => {
   return (
-    <div className="flex items-center justify-center flex-col">
+    <div className="h-full flex items-center justify-center flex-col">
         <div className={cn(
             "flex items-center justify-center flex-col",
             headingFont.className
