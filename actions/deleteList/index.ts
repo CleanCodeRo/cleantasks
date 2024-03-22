@@ -37,7 +37,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityTitle: list.title,
       entityId: list.id,
       entityType: ENTITY_TYPE.LIST,
-      action: ACTION.CREATE,
+      action: ACTION.DELETE,
     })
   } catch (error) {
     return {
