@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
 import { NavItem, Organization } from "./NavItem";
+import BugButton from "./BugButton";
 
 interface SidebarProps {
   storageKey?: string;
@@ -62,40 +63,45 @@ const Sidebar = ({ storageKey = "c-sidebar-state" }: SidebarProps) => {
           <Skeleton className="h-10 w-10" />
         </div>
         <div className="space-y-2">
-            <NavItem.Skeleton />
-            <NavItem.Skeleton />
-            <NavItem.Skeleton />
+          <NavItem.Skeleton />
+          <NavItem.Skeleton />
+          <NavItem.Skeleton />
         </div>
       </>
     );
   }
 
   return (
-    <>
-      <div className="font-medium text-xs flex items-center mb-1">
-        <span className="pl-4">Workspaces</span>
-        <Button asChild type="button" variant="ghost" className="ml-auto">
-          <Link href="/select-org">
-            <Plus className="h-4 w-4" />
-          </Link>
-        </Button>
+    <div className="flex flex-col 4xs:h-full sm:h-[89vh] justify-between">
+      <div className="flex flex-col justify-start">
+        <div className="font-medium text-xs flex items-center mb-1">
+          <span className="pl-4">Workspaces</span>
+          <Button asChild type="button" variant="ghost" className="ml-auto">
+            <Link href="/select-org">
+              <Plus className="h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+        <Accordion
+          type="multiple"
+          defaultValue={defaultAccordionValue}
+          className="space-y-2"
+        >
+          {userMemberships.data.map((org) => (
+            <NavItem
+              key={org.id}
+              isActive={activeOrganization?.id === org.organization.id}
+              isExpanded={expanded[org.organization.id]}
+              organization={org.organization as Organization}
+              onExpand={onExpand}
+            />
+          ))}
+        </Accordion>
       </div>
-      <Accordion
-        type="multiple"
-        defaultValue={defaultAccordionValue}
-        className="space-y-2"
-      >
-        {userMemberships.data.map((org) => (
-          <NavItem
-            key={org.id}
-            isActive={activeOrganization?.id === org.organization.id}
-            isExpanded={expanded[org.organization.id]}
-            organization={org.organization as Organization}
-            onExpand={onExpand}
-          />
-        ))}
-      </Accordion>
-    </>
+      <div className="flex">
+        <BugButton/>
+      </div>
+    </div>
   );
 };
 
