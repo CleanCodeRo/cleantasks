@@ -1,5 +1,6 @@
 "use client";
 import { updateCard } from "@/actions/updateCard";
+import { FormNumberInput } from "@/components/form/FormNumberInput";
 import FormSubmit from "@/components/form/FormSubmit";
 import { FormTextArea } from "@/components/form/FormTextarea";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ const Description = ({ data }: DescriptionProps) => {
 
   const textareaRef = useRef<ElementRef<"textarea">>(null);
   const fomRef = useRef<ElementRef<"form">>(null);
+  const numberInputRef = useRef<ElementRef<"input">>(null);
 
   const enableEditing = () => {
     setIsEditing(true);
@@ -51,13 +53,13 @@ const Description = ({ data }: DescriptionProps) => {
       toast.success(`Updated card description`);
       queryClient.invalidateQueries({
         queryKey: ["card", data.id],
-      })
+      });
 
       queryClient.invalidateQueries({
-        queryKey: ["card-logs", data.id]
-    })
+        queryKey: ["card-logs", data.id],
+      });
 
-        disableEditing();
+      disableEditing();
     },
     onError: (error) => {
       toast.error(error);
@@ -67,10 +69,12 @@ const Description = ({ data }: DescriptionProps) => {
   const onSubmit = (formData: FormData) => {
     const description = formData.get("description") as string;
     const boardId = params.boardId as string;
+    const hoursWorked = parseFloat(formData.get("hoursWorked") as string) || 0;
 
     execute({
       id: data.id,
       description,
+      hoursWorked,
       boardId,
     });
   };
@@ -90,8 +94,18 @@ const Description = ({ data }: DescriptionProps) => {
               errors={fieldErrors}
               ref={textareaRef}
             />
+            <FormNumberInput
+              id="hoursWorked"
+              label="Hours Worked"
+              placeholder="0"
+              className="w-24"
+              ref={numberInputRef}
+              defaultValue={data.hoursWorked || 0}
+            />
             <div className="flex items-center gap-x-2">
-              <FormSubmit className="bg-[#4D724D] hover:bg-white/10 ">Save</FormSubmit>
+              <FormSubmit className="bg-[#4D724D] hover:bg-white/10 ">
+                Save
+              </FormSubmit>
               <Button
                 type="button"
                 onClick={disableEditing}
@@ -103,13 +117,18 @@ const Description = ({ data }: DescriptionProps) => {
             </div>
           </form>
         ) : (
-          <div
-            onClick={enableEditing}
-            role="button"
-            className="min-h-[78px] bg-white/40  text-sm font-medium py-3 px-3.5 rounded-md"
-          >
-            {data.description || "Add a more detailed description..."}
-          </div>
+          <>
+            <div
+              onClick={enableEditing}
+              role="button"
+              className="min-h-[78px] bg-white/40 text-sm font-medium py-3 px-3.5 rounded-md"
+            >
+              {data.description || "Add a more detailed description..."}
+            </div>
+            <div className="text-xs text-gray-500 mt-2" onClick={enableEditing}>
+              Hours Worked: {data.hoursWorked}
+            </div>
+          </>
         )}
       </div>
     </div>

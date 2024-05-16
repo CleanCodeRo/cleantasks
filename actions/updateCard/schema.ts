@@ -19,4 +19,10 @@ export const UpdateCard = z.object({
       message: "Title is too short",
     })),
   id: z.string(),
+  hoursWorked: z.optional(z.number({
+    required_error: "Hours worked is required",
+    invalid_type_error: "Hours worked is required",
+  }).min(0, {
+    message: "Hours worked must be greater than 0",
+  }))
 });
