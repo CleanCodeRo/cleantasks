@@ -21,12 +21,16 @@ const CardModal = () => {
   const { data: cardData } = useQuery<CardWithList>({
     queryKey: ["card", id],
     queryFn: () => fetcher(`/api/cards/${id}`),
+    enabled: !!id && isOpen,
   })
 
   const { data: auditLogData } = useQuery<AuditLog[]>({
     queryKey: ["card-logs", id],
     queryFn: () => fetcher(`/api/cards/${id}/logs`),
+    enabled: !!id && isOpen,
   })
+
+  if (!isOpen) return null;
 
   return (
     <Dialog
